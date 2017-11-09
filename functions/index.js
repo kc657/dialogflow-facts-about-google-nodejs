@@ -284,6 +284,7 @@ const factsAboutGoogle = functions.https.onRequest((request, response) => {
   console.log(`Request headers: ${JSON.stringify(request.headers)}`)
   console.log(`Request body: ${JSON.stringify(request.body)}`)
   app.handleRequest(actionMap)
+  dashbot.configHandler(app)
 })
 
 module.exports = {
