@@ -18,7 +18,7 @@ const functions = require('firebase-functions')
 const { sprintf } = require('sprintf-js')
 
 const config = require('./env.json')
-const dashbot = require('dashbot')(config.DASHBOT_API_KEY).google;
+const dashbot = require('dashbot')(config.DASHBOT_API_KEY).google
 
 const DEFAULT_LOCALE = 'en-US'
 const localizedStrings = {
@@ -57,7 +57,6 @@ const getRandomValue = array => array[Math.floor(Math.random() * array.length)]
 
 /** @param {Array<string>} facts The array of facts to choose a fact from */
 const getRandomFact = facts => {
-
   if (!facts.length) {
     return null
   }
@@ -281,7 +280,9 @@ actionMap.set(Actions.TELL_CAT_FACT, tellCatFact)
  */
 const factsAboutGoogle = functions.https.onRequest((request, response) => {
   const app = new DialogflowApp({ request, response })
-  dashbot.configHandler(app)
+  dashbot.configHandler(app, {
+      we: 'like incoming metadata'
+    })
   console.log(`Request headers: ${JSON.stringify(request.headers)}`)
   console.log(`Request body: ${JSON.stringify(request.body)}`)
   app.handleRequest(actionMap)
