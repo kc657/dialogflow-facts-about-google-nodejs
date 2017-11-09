@@ -281,10 +281,10 @@ actionMap.set(Actions.TELL_CAT_FACT, tellCatFact)
  */
 const factsAboutGoogle = functions.https.onRequest((request, response) => {
   const app = new DialogflowApp({ request, response })
+  dashbot.configHandler(app)
   console.log(`Request headers: ${JSON.stringify(request.headers)}`)
   console.log(`Request body: ${JSON.stringify(request.body)}`)
   app.handleRequest(actionMap)
-  dashbot.configHandler(app)
 })
 
 module.exports = {
