@@ -1,16 +1,3 @@
-// Copyright 2016, Google, Inc.
-// Licensed under the Apache License, Version 2.0 (the 'License');
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an 'AS IS' BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 'use strict'
 
 const { DialogflowApp } = require('actions-on-google')
@@ -18,13 +5,9 @@ const functions = require('firebase-functions')
 const { sprintf } = require('sprintf-js')
 
 const config = require('./env.json')
-const dashbot = require('dashbot')(config.DASHBOT_API_KEY).google
+const dashbot = require('dashbot')('1zs52ZUZagAFxAcbCLrvWwxYe6UOaQXK9iVqmeXq').google
 
-const DEFAULT_LOCALE = 'en-US'
-const localizedStrings = {
-  'en-US': require('./strings_en-us.js'),
-  'en-GB': require('./strings_en-gb.js')
-}
+const strings = require('./strings')
 
 process.env.DEBUG = 'actions-on-google:*'
 
@@ -53,7 +36,7 @@ const Lifespans = {
  * @template T
  * @param {Array<T>} array The array to get a random value from
  */
-const getRandomValue = array => array[Math.floor(Math.random() * array.length)]
+const getRandomValue = array => array[0]
 
 /** @param {Array<string>} facts The array of facts to choose a fact from */
 const getRandomFact = facts => {
@@ -82,7 +65,6 @@ if (!Object.values) {
  * @return {void}
  */
 const unhandledDeepLinks = app => {
-  const strings = localizedStrings[app.getUserLocale()] || localizedStrings[DEFAULT_LOCALE]
   /** @type {string} */
   const rawInput = app.getRawInput()
   const response = sprintf(strings.general.unhandled, rawInput)
@@ -133,7 +115,6 @@ const initData = app => {
  * @param {string} redirectCategory The category to redirect to since there are no facts left
  */
 const noFactsLeft = (app, currentCategory, redirectCategory) => {
-  const strings = localizedStrings[app.getUserLocale()] || localizedStrings[DEFAULT_LOCALE]
   const data = initData(app)
   // Replace the outgoing facts context with different parameters
   app.setContext(Contexts.FACTS, Lifespans.DEFAULT, { [Parameters.CATEGORY]: redirectCategory })
@@ -152,7 +133,6 @@ const noFactsLeft = (app, currentCategory, redirectCategory) => {
  * @return {void}
  */
 const tellFact = app => {
-  const strings = localizedStrings[app.getUserLocale()] || localizedStrings[DEFAULT_LOCALE]
   const data = initData(app)
   const facts = data.facts.content
   for (const category of strings.categories) {
@@ -224,7 +204,6 @@ const tellFact = app => {
  * @return {void}
  */
 const tellCatFact = app => {
-  const strings = localizedStrings[app.getUserLocale()] || localizedStrings[DEFAULT_LOCALE]
   const data = initData(app)
   if (!data.facts.cats) {
     data.facts.cats = strings.cats.facts.slice()
@@ -281,8 +260,8 @@ actionMap.set(Actions.TELL_CAT_FACT, tellCatFact)
 const factsAboutGoogle = functions.https.onRequest((request, response) => {
   const app = new DialogflowApp({ request, response })
   dashbot.configHandler(app, {
-      we: 'like incoming metadata'
-    })
+    we: 'like incoming metadata'
+  })
   console.log(`Request headers: ${JSON.stringify(request.headers)}`)
   console.log(`Request body: ${JSON.stringify(request.body)}`)
   app.handleRequest(actionMap)

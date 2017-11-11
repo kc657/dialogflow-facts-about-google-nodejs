@@ -25,13 +25,14 @@ const deepFreeze = require('deep-freeze');
 
 const categories = [
   {
-    "category": "color",
-    "suggestion": "Colors",
+    "category": "headquarters",
+    "suggestion": "Headquarters",
     "facts": [
-      "My favorite color is blue or red",
-      "I really dislike purple."
+      "Google's headquarters is in Mountain View, California.",
+      "Google has over 30 cafeterias in its main campus.",
+      "Google has over 10 fitness facilities in its main campus."
     ],
-    "factPrefix": "Okay, here's a color fact."
+    "factPrefix": "Okay, here's a headquarters fact."
   },
   {
     "category": "history",
