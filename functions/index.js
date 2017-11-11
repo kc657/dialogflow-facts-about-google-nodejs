@@ -14,16 +14,16 @@ process.env.DEBUG = 'actions-on-google:*'
 /** Dialogflow Actions {@link https://dialogflow.com/docs/actions-and-parameters#actions} */
 const Actions = {
   UNRECOGNIZED_DEEP_LINK: 'deeplink.unknown',
-  TELL_FACT: 'tell.fact',
+  TELL_FACT: 'tell.facebook',
   TELL_CAT_FACT: 'tell.cat.fact'
 }
 /** Dialogflow Parameters {@link https://dialogflow.com/docs/actions-and-parameters#parameters} */
 const Parameters = {
-  CATEGORY: 'category'
+  CATEGORY: 'documentation-category'
 }
 /** Dialogflow Contexts {@link https://dialogflow.com/docs/contexts} */
 const Contexts = {
-  FACTS: 'choose_fact-followup',
+  FACTS: 'choose_facebook-followup',
   CATS: 'choose_cats-followup'
 }
 /** Dialogflow Context Lifespans {@link https://dialogflow.com/docs/contexts#lifespan} */
